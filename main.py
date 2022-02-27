@@ -25,24 +25,28 @@ def get_receivers():
         f = os.path.join(directory, filename)
         if os.path.isfile(f):
             if f.endswith(".json"):
+                print(filename)
                 main(filename)
 
 def main(filename):
     receivers_file = open(filename, "r", encoding="utf-8")
     receivers_data = json.load(receivers_file)
     receiver_list = list(receivers_data["items"])
-    for receiver in receiver_list:
+    index = 0
+    for receiver in receiver_list[200:]:
+        print(index)
         email = receiver.get("email")
-        if not email:
+        if not email or email == None or email == "None":
             print("Error: no email")
             continue
         try:
-            server.sendmail(SENDER, [email], message(SENDER, "mogu4iy.kotygoroshko@gmail.com").encode("utf-8"))   
-            server.quit()      
-            print("Successfully sent email")
+            server.sendmail(SENDER, [email], message(SENDER, "mogu4iy.kotygoroshko@gmail.com").encode("utf-8"))
+            index += 1
+            print(f"Successfully sent email {index}")
         except Exception as e:
             print(f"Error: unable to send email {e}")
-
+    server.quit()
+    
 if __name__ == "__main__":
     # main()
     get_receivers()
