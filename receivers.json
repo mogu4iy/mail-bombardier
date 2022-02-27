@@ -1,0 +1,9 @@
+{
+    "items": [
+        {
+            "email": "example@gmail.com",
+            "name": "Example name",
+            "country": "ru"
+        }
+    ]
+}
