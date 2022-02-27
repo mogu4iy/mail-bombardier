@@ -19,8 +19,16 @@ server.login(user=LOGIN, password=PASSWORD)
 
 message = utils.INFO_MESSAGE
 
-def main():
-    receivers_file = open("receivers.json", "r", encoding="utf-8")
+def get_receivers():
+    directory = "./"
+    for filename in os.listdir(directory):
+        f = os.path.join(directory, filename)
+        if os.path.isfile(f):
+            if f.endswith(".json"):
+                main(filename)
+
+def main(filename):
+    receivers_file = open(filename, "r", encoding="utf-8")
     receivers_data = json.load(receivers_file)
     receiver_list = list(receivers_data["items"])
     for receiver in receiver_list:
@@ -29,11 +37,12 @@ def main():
             print("Error: no email")
             continue
         try:
-            server.sendmail(SENDER, [email], message(SENDER, "mogu4iy.kotygoroshko@gmail.com"))   
+            server.sendmail(SENDER, [email], message(SENDER, "mogu4iy.kotygoroshko@gmail.com").encode("utf-8"))   
             server.quit()      
             print("Successfully sent email")
         except Exception as e:
             print(f"Error: unable to send email {e}")
 
 if __name__ == "__main__":
-    main()
+    # main()
+    get_receivers()
